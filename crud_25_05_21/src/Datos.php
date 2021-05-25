@@ -16,11 +16,13 @@ class Datos {
     }
     public function crearClientes($c){
         $cliente =new Clientes();
-        for ($i=0; $i < $c; $i++) { 
-            $cliente->setApellidos($this->faker->lastName." ".$this->faker->lastName);
-            $cliente->setNombre($this->faker->firstName());
-            $cliente->setEmail($this->faker->unique()->freeEmail);
-            $cliente->create();
+        if($cliente->hayClientes()){
+            for ($i=0; $i < $c; $i++) { 
+                $cliente->setApellidos($this->faker->lastName." ".$this->faker->lastName);
+                $cliente->setNombre($this->faker->firstName());
+                $cliente->setEmail($this->faker->unique()->freeEmail);
+                $cliente->create();
+            }
         }
         $cliente=null;
     }

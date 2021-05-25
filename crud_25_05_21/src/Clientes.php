@@ -31,6 +31,17 @@ class Clientes extends Conexion{
     public function delete(){
         
     }
+    public function hayClientes(){
+        $c="select * from clientes";
+        $stmt=parent::$conexion->prepare($c);
+        try {
+            $stmt->execute();
+        } catch (PDOException $ex) {
+            die("ERROR");
+        }
+        $datos=$stmt->fetch(PDO::FETCH_OBJ);
+        return ($datos==null)? true:false;
+    }
 
     /**
      * Get the value of id

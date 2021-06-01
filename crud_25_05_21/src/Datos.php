@@ -26,4 +26,9 @@ class Datos {
         }
         $cliente=null;
     }
+    public function crearHoteles($c){
+        $hoteles =new Hoteles();
+        $hoteles->deleteAll();
+        
+    }
 }

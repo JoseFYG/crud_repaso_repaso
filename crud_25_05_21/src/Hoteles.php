@@ -2,7 +2,7 @@
 namespace Clases;
 use PDOException;
 use PDO;
-class Clientes extends Conexion{
+class Hoteles extends Conexion{
     private $id, $nombre, $apellidos, $email;
 
     public function __construct(){
@@ -10,20 +10,20 @@ class Clientes extends Conexion{
     }
 
     public function create(){
-        $c="insert into clientes(apellidos, nombre, email) values (:a, :n, :e)";
+        $c="insert into hoteles(nombre, localidad, direccion) values (:n, :l, :d)";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute([
-                ":a"=>$this->apellidos,
                 ":n"=>$this->nombre,
-                ":e"=>$this->email
+                ":l"=>$this->localidad,
+                ":d"=>$this->direccion
             ]);
         } catch (PDOException $ex) {
             die("Error al conectar con la bbdd: ".$ex->getMessage());
         }
     }
     public function read($id){
-        $c="select * from clientes";
+        $c="select * from hoteles";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute();
@@ -34,10 +34,20 @@ class Clientes extends Conexion{
         return $fila;
     }
     public function update(){
-        
+        $c="update hoteles(nombre, localidad, direccion) values (:n, :l, :d)";
+        $stmt=parent::$conexion->prepare($c);
+        try {
+            $stmt->execute([
+                ":n"=>$this->nombre,
+                ":l"=>$this->localidad,
+                ":d"=>$this->direccion
+            ]);
+        } catch (PDOException $ex) {
+            die("Error al conectar con la bbdd: ".$ex->getMessage());
+        }
     }
     public function delete(){
-        $c="delete from clientes where id=:i";
+        $c="delete from hoteles where id=:i";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute([
@@ -47,8 +57,8 @@ class Clientes extends Conexion{
             die("ERROR al borrar cliente");
         }
     }
-    public function hayClientes(){
-        $c="select * from clientes";
+    public function hayHotel(){
+        $c="select * from hoteles";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute();
@@ -60,7 +70,7 @@ class Clientes extends Conexion{
     }
 
     public function getTodos(){
-        $c="select * from clientes order by apellidos";
+        $c="select * from hoteles order by localidad, nombre";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute();
@@ -70,12 +80,12 @@ class Clientes extends Conexion{
         return $stmt;
     }
 
-    public function existeEmail($m){
-        $c="select * from clientes where email=:m";
+    public function existeNombre($n){
+        $c="select * from hoteles where nombre=:n";
         $stmt=parent::$conexion->prepare($c);
         try {
             $stmt->execute([
-                ":m"=>$this->$m
+                ":n"=>$this->$n
             ]);
         } catch (PDOException $ex) {
             die("ERROR");
@@ -84,7 +94,7 @@ class Clientes extends Conexion{
         return ($fila)? false:true;
     }
 
-    public function existeEmailU($m, $id){
+    /*public function existeEmailU($m, $id){
         $c="select * from clientes where email=:m AND id=:i";
         $stmt=parent::$conexion->prepare($c);
         try {
@@ -97,7 +107,7 @@ class Clientes extends Conexion{
         }
         $fila=$stmt->fetch(PDO::FETCH_OBJ);
         return ($fila)? true:false;
-    }
+    }*/
 
     /**
      * Get the value of id
